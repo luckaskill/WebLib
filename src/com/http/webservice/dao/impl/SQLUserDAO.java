@@ -18,7 +18,11 @@ public class SQLUserDAO extends SQLManager implements UserDAO {
     private static final String ADD_USER_WITH_CREDENTIALS = "INSERT into users (login, password)" +
             " VALUES (?, ?)";
 
-    private ConnectionPool pool = ConnectionPool.getInstance();
+    private ConnectionPool pool;
+
+    public SQLUserDAO(ConnectionPool pool) {
+        this.pool = pool;
+    }
 
     @Override
     public User authorization(String login, String password) throws DAOException {

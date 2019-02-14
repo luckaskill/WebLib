@@ -23,10 +23,11 @@ public class SQLLibraryDAO implements LibraryDAO {
     private static final String CHANGE_BOOK_PARAMETERS = "UPDATE books SET title=?, author=?, issue=?, coast=?, " +
             "rent_coast=?, rating=? WHERE id = ?;";
 
-    private ConnectionPool pool = ConnectionPool.getInstance();
+    private ConnectionPool pool;
 
 
-    public SQLLibraryDAO() {
+    public SQLLibraryDAO(ConnectionPool pool) {
+        this.pool = pool;
     }
 
     @Override

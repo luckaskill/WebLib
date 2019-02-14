@@ -1,14 +1,17 @@
 package com.http.webservice.entity;
 
-import java.sql.Date;
 
-public class Book {
+import java.sql.Date;
+import java.util.Objects;
+
+public class  Book {
+
     private String title;
     private String author;
     private int issue;
     private float coast;
     private int rating;
-    private float rentCoast = 5.0f;
+    private float rentCoast;
     private Date deadline;
     private long id;
 
@@ -29,9 +32,6 @@ public class Book {
         this.rating = rating;
         this.rentCoast = rentCoast;
         this.id = id;
-    }
-
-    public Book() {
     }
 
     public void setCoast(float coast) {
@@ -126,8 +126,8 @@ public class Book {
         if (issue != book.issue) return false;
         if (Float.compare(book.coast, coast) != 0) return false;
         if (rating != book.rating) return false;
-        if (title != null ? !title.equals(book.title) : book.title != null) return false;
-        return author != null ? author.equals(book.author) : book.author == null;
+        if (!Objects.equals(title, book.title)) return false;
+        return Objects.equals(author, book.author);
     }
 
     @Override

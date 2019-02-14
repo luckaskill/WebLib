@@ -8,34 +8,27 @@ import com.http.webservice.dao.patterns.AdministrationDAO;
 import com.http.webservice.dao.patterns.LibraryDAO;
 import com.http.webservice.dao.patterns.TurnoverDAO;
 import com.http.webservice.dao.patterns.UserDAO;
+import com.http.webservice.dao.pool.ConnectionPool;
+import com.http.webservice.exception.DAOException;
+import com.http.webservice.exception.PoolOpenExceptionRunTime;
 
 public class DAOFactory {
-    private static final DAOFactory instance = new DAOFactory();
-    private UserDAO userDAO = new SQLUserDAO();
-    private LibraryDAO libraryDAO = new SQLLibraryDAO();
-    private TurnoverDAO turnover = new SQLVendorDAO();
-    private AdministrationDAO administration = new SQLAdministrationDAO();
+    private static ConnectionPool pool;
+
+    static {
+        try {
+            pool = new ConnectionPool();
+        } catch (DAOException e) {
+            throw new PoolOpenExceptionRunTime(e.getMessage(), e);
+        }
+    }
+
+    public static UserDAO userDAO = new SQLUserDAO(pool);
+    public static LibraryDAO libraryDAO = new SQLLibraryDAO(pool);
+    public static TurnoverDAO turnover = new SQLVendorDAO(pool);
+    public static AdministrationDAO administration = new SQLAdministrationDAO(pool);
 
     private DAOFactory() {
     }
 
-    public AdministrationDAO getAdministration() {
-        return administration;
-    }
-
-    public TurnoverDAO getTurnover() {
-        return turnover;
-    }
-
-    public LibraryDAO getLibraryDAO() {
-        return libraryDAO;
-    }
-
-    public static DAOFactory getInstance() {
-        return instance;
-    }
-
-    public UserDAO getUserDAO() {
-        return userDAO;
-    }
 }

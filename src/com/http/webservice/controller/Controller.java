@@ -3,7 +3,6 @@ package com.http.webservice.controller;
 import com.http.webservice.controller.command.Command;
 import com.http.webservice.controller.command.CommandProvider;
 import com.http.webservice.controller.command.impl.client.LogOut;
-import com.http.webservice.controller.tools.ForwardByAccess;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +13,6 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
     private static final String PARAMETER_COMMAND = "command";
     private final CommandProvider provider = new CommandProvider();
-private static int i=0;
     public Controller() {
         super();
     }

@@ -2,7 +2,6 @@ package com.http.webservice.dao.pool;
 
 import com.http.webservice.dao.SQLManager;
 import com.http.webservice.exception.DAOException;
-import com.http.webservice.exception.PoolOpenExceptionRunTime;
 
 import java.sql.*;
 import java.util.Map;
@@ -12,24 +11,24 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 public class ConnectionPool extends SQLManager {
-    private static ConnectionPool instance;
-
-    static {
-        try {
-            instance = new ConnectionPool();
-        } catch (DAOException e) {
-            throw new PoolOpenExceptionRunTime(e.getMessage(), e);
-        }
-    }
+//    private static ConnectionPool instance;
+//
+//    static {
+//        try {
+//            instance = new ConnectionPool();
+//        } catch (DAOException e) {
+//            throw new PoolOpenExceptionRunTime(e.getMessage(), e);
+//        }
+//    }
 
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
 
-    private ConnectionPool() throws DAOException {
+    public ConnectionPool() throws DAOException {
         initPoolData();
     }
 
-    private void initPoolData() throws DAOException {
+    public void initPoolData() throws DAOException {
         int poolSize = Integer.parseInt(SQLManager.poolSize);
 
         Connection connection;
@@ -109,9 +108,9 @@ public class ConnectionPool extends SQLManager {
         }
     }
 
-    public synchronized static ConnectionPool getInstance() {
-        return instance;
-    }
+//    public synchronized static ConnectionPool getInstance() {
+//        return instance;
+//    }
 
     public BlockingQueue<Connection> getConnectionQueue() {
         return connectionQueue;

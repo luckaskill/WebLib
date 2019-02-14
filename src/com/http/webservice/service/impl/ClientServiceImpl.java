@@ -16,9 +16,8 @@ import com.http.webservice.service.validation.NewUserDataValidator;
 import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
-    private DAOFactory daoFactory = DAOFactory.getInstance();
-    private UserDAO sqlUserDAO = daoFactory.getUserDAO();
-    private AdministrationDAO administrationDAO = daoFactory.getAdministration();
+    private UserDAO sqlUserDAO = DAOFactory.userDAO;
+    private AdministrationDAO administrationDAO = DAOFactory.administration;
 
     @Override
     public User authorization(String login, String password) throws ServiceException, ValidationException {

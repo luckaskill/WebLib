@@ -19,7 +19,11 @@ public class SQLVendorDAO implements TurnoverDAO {
 
     private static final String ACTUAL_TIME = "SELECT CURDATE();";
 
-    private ConnectionPool pool = ConnectionPool.getInstance();
+    private ConnectionPool pool;
+
+    public SQLVendorDAO(ConnectionPool pool) {
+        this.pool = pool;
+    }
 
     @Override
     public void rentABook(String title, String author, int issue, Float coast, int rating, Float rentCoast, User user) throws DAOException {

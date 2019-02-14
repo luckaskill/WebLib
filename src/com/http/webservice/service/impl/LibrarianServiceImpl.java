@@ -15,9 +15,8 @@ import com.http.webservice.service.validation.SearchCriteriaValidator;
 import java.util.List;
 
 public class LibrarianServiceImpl implements LibrarianService {
-    private DAOFactory daoFactory = DAOFactory.getInstance();
-    private LibraryDAO libraryDAO = daoFactory.getLibraryDAO();
-    private TurnoverDAO turnover = daoFactory.getTurnover();
+    private LibraryDAO libraryDAO = DAOFactory.libraryDAO;
+    private TurnoverDAO turnover = DAOFactory.turnover;
 
     @Override
     public List<Book> find(String criteria) throws ValidationException, ServiceException {

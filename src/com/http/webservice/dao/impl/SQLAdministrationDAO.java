@@ -17,7 +17,11 @@ public class SQLAdministrationDAO implements AdministrationDAO {
     private static final String CHECK_PASSWORD_AND_ACTION_NAME = "SELECT * FROM admin_passwords WHERE password = ? and action_name = ?";
     private static final String SET_NEW_ACCESS_LEVEL_TO_USER = "UPDATE users SET accessLevel = ? WHERE id = ?;";
 
-    private ConnectionPool pool = ConnectionPool.getInstance();
+    private ConnectionPool pool;
+
+    public SQLAdministrationDAO(ConnectionPool pool) {
+        this.pool = pool;
+    }
 
     @Override
     public List<User> findAllUsers() throws DAOException {
@@ -73,13 +77,13 @@ public class SQLAdministrationDAO implements AdministrationDAO {
     }
 
     private int defineNewAccessLevel(String password) throws DAOException {
-        if(password.equals("Promote")){
+        if (password.equals("Promote")) {
             return 2;
         }
-        if(password.equals("Block")){
+        if (password.equals("Block")) {
             return 0;
         }
-        if(password.equals("Unblock") || password.equals("Demotion")){
+        if (password.equals("Unblock") || password.equals("Demotion")) {
             return 1;
         }
         throw new DAOException("WRONG PASSWORD");
