@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
     private static final String PARAMETER_COMMAND = "command";
     private final CommandProvider provider = new CommandProvider();
-
+private static int i=0;
     public Controller() {
         super();
     }

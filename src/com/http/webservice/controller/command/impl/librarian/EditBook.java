@@ -1,14 +1,18 @@
 package com.http.webservice.controller.command.impl.librarian;
 
 import com.http.webservice.controller.command.Command;
+import com.http.webservice.controller.command.impl.client.GoToStartPage;
 import com.http.webservice.controller.tools.ForwardByAccess;
+import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.LibrarianService;
 import com.http.webservice.service.ServiceFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class EditBook implements Command {
     private static final String PARAMETER_TITLE = "title";
@@ -20,9 +24,15 @@ public class EditBook implements Command {
     private static final String PARAMETER_ID = "bookID";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         LibrarianService librarianService = serviceFactory.getLibrarianService();
+        User user = (User) request.getSession(false).getAttribute("user");
+        if (user.getAccessLevel() < 2) {
+            GoToStartPage goToStartPage = new GoToStartPage();
+            goToStartPage.execute(request, response);
+            return;
+        }
 
         String title = request.getParameter(PARAMETER_TITLE);
         String author = request.getParameter(PARAMETER_AUTHOR);

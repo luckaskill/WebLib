@@ -19,6 +19,7 @@ public class Authorization implements Command {
     private static final String PARAMETER_LOGIN = "login";
     private static final String PARAMETER_PASSWORD = "password";
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user;

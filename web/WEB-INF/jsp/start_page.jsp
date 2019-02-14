@@ -20,6 +20,10 @@
     </style>
 </head>
 <body>
+<c:if test="${requestScope.logOut}">
+    <c:redirect url="controller?command=goToStartPage"/>
+</c:if>
+
 <fmt:setLocale value="${sessionScope.local}"/>
 <c:set var="www" value="12" scope="session"/>
 <fmt:setBundle basename="resources.locale.locale" var="loc"/>
@@ -41,7 +45,7 @@
         <input type="submit" name="${locale_button_eng}" value="${locale_button_eng}"/>
     </form>
 </div>
-<div style="height: 500px; color: antiquewhite;" align="center">
+<div style="color: antiquewhite;" align="center">
     <form action="controller" method="get" style="margin-top: 10%;">
         <input type="hidden" name="command" value="authorization">
         ${locale_login}:
