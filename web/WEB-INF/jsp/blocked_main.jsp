@@ -15,17 +15,7 @@
             position: fixed;
         }
 
-        .resultMessage {
-            position: absolute;
-            top: 10%;
-            left: 24%;
-        }
         form {
-            margin: 2px;
-        }
-        .tableButtonSize {
-            width: 95%;
-            height: 40%;
             margin: 2px;
         }
     </style>

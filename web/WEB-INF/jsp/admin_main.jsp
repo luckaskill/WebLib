@@ -320,14 +320,14 @@
                         <form>
                             <input type="hidden" name="command" value="openChangeRankPanel">
                             <input type="hidden" name="login" value="${user.login}">
-                            <input type="hidden" name="changingUserID" value="${user.ID}">
+                            <input type="hidden" name="changingUserID" value="${user.id}">
                             <input type="hidden" name="actionName" value="Promote">
                             <input type="submit" name="promoteUserButton" value="Promote" class="tableButtonSize"/>
                         </form>
                         <form>
                             <input type="hidden" name="command" value="openChangeRankPanel">
                             <input type="hidden" name="login" value="${user.login}">
-                            <input type="hidden" name="changingUserID" value="${user.ID}">
+                            <input type="hidden" name="changingUserID" value="${user.id}">
                             <input type="hidden" name="actionName" value="Block">
                             <input type="submit" name="blockUserButton" value="Block" class="tableButtonSize"/>
                         </form>
@@ -337,7 +337,7 @@
                         <form>
                             <input type="hidden" name="command" value="openChangeRankPanel">
                             <input type="hidden" name="login" value="${user.login}">
-                            <input type="hidden" name="changingUserID" value="${user.ID}">
+                            <input type="hidden" name="changingUserID" value="${user.id}">
                             <input type="hidden" name="actionName" value="Demotion">
                             <input type="submit" name="demotionUserButton" value="Demotion"
                                    class="tableButtonSize"/>
@@ -347,7 +347,7 @@
                         <form>
                             <input type="hidden" name="command" value="openChangeRankPanel">
                             <input type="hidden" name="login" value="${user.login}">
-                            <input type="hidden" name="changingUserID" value="${user.ID}">
+                            <input type="hidden" name="changingUserID" value="${user.id}">
                             <input type="hidden" name="actionName" value="Unblock">
                             <input type="submit" name="unblockUserButton" value="Unblock" class="tableButtonSize"/>
                         </form>

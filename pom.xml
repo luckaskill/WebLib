@@ -43,11 +43,11 @@
             <version>1.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.jstl.standard</groupId>
-            <artifactId>standard</artifactId>
-            <version>1</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.jstl.standard</groupId>-->
+        <!--<artifactId>standard</artifactId>-->
+        <!--<version>1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -56,4 +56,15 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>web.WEB-INF.web.xml</webXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
