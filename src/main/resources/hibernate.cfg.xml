@@ -20,7 +20,7 @@
         <mapping class="com.http.webservice.entity.Book" />
         <mapping class="com.http.webservice.entity.User" />
         <mapping class="com.http.webservice.entity.Rent" />
-        <mapping class="com.http.webservice.entity.Purchased" />
+        <mapping class="com.http.webservice.entity.Selling" />
 
     </session-factory>
 </hibernate-configuration>

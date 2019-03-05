@@ -3,7 +3,7 @@ package com.http.webservice.dao.impl;
 import com.http.webservice.dao.HibernateSessionFactoryUtil;
 import com.http.webservice.dao.patterns.LibraryDAO;
 import com.http.webservice.entity.Book;
-import com.http.webservice.entity.Purchased;
+import com.http.webservice.entity.Selling;
 import com.http.webservice.entity.Rent;
 import com.http.webservice.entity.User;
 import lombok.Cleanup;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("Duplicates")
 @Component
@@ -95,14 +94,14 @@ public class SQLLibraryDAO implements LibraryDAO {
     }
 
     @Override
-    public Set<Rent> findRentBooks(long userID) {
+    public List<Rent> findRentBooks(long userID) {
         @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         User user = session.get(User.class, userID);
         return user.getRentBooks();
     }
 
     @Override
-    public Set<Purchased> findPurchasedBooks(long userID) {
+    public List<Selling> findPurchasedBooks(long userID) {
         @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         User user = session.get(User.class, userID);
         return user.getPurchasedBooks();
@@ -130,5 +129,21 @@ public class SQLLibraryDAO implements LibraryDAO {
         Transaction tr = session.beginTransaction();
         session.update(book);
         tr.commit();
+    }
+
+    @Override
+    public void returnBook(long rentID) {
+        @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(session.get(Rent.class, rentID));
+        session.getTransaction().commit();
+    }
+
+    @Override
+    public void removePurchase(long rentID) {
+        @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.remove(session.get(Selling.class, rentID));
+        session.getTransaction().commit();
     }
 }

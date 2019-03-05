@@ -2,9 +2,8 @@ package com.http.webservice.dao.impl;
 
 import com.http.webservice.dao.HibernateSessionFactoryUtil;
 import com.http.webservice.dao.patterns.VendorDAO;
-import com.http.webservice.dao.pool.ConnectionPool;
 import com.http.webservice.entity.Book;
-import com.http.webservice.entity.Purchased;
+import com.http.webservice.entity.Selling;
 import com.http.webservice.entity.Rent;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.DAOException;
@@ -29,6 +28,8 @@ public class SQLVendorDAO implements VendorDAO {
         checkBookForDuplicated(user, book, true);
         if (userID != 1) {
             purchase(session, rentCoast, user);
+        } else {
+            session.beginTransaction();
         }
         Date actualDate = getActualDate(session);
         Rent rent = new Rent(getDeadLine(actualDate), actualDate, user, book);
@@ -45,20 +46,22 @@ public class SQLVendorDAO implements VendorDAO {
         checkBookForDuplicated(user, book, false);
         if (userID != 1) {
             purchase(session, coast, user);
+        } else {
+            session.beginTransaction();
         }
-        Purchased purchase = new Purchased(getActualDate(session), user, book);
+        Selling purchase = new Selling(getActualDate(session), user, book);
         session.save(purchase);
         session.getTransaction().commit();
     }
 
     private void checkBookForDuplicated(User user, Book book, boolean isRent) throws
             DAOException {
-        for (Purchased purchased : user.getPurchasedBooks()) {
-            if (purchased.getBook().equals(book)) {
+        for (Selling selling : user.getPurchasedBooks()) {
+            if (selling.getBook().equals(book)) {
                 throw new DAOException("You already bought this book");
             }
         }
-        if(isRent) {
+        if (isRent) {
             for (Rent rent : user.getRentBooks()) {
                 if (rent.getBook().equals(book)) {
                     throw new DAOException("You already rent this book");
@@ -67,18 +70,18 @@ public class SQLVendorDAO implements VendorDAO {
         }
     }
 
-    private void purchase(Session session, float coast, User user) {
+    private void purchase(Session session, float coast, User user) throws DAOException {
         User mainAcc = session.get(User.class, 1L);
         float userBalance = user.getCashValue();
         session.beginTransaction();
-        System.out.println(user);
         user.setCashValue(userBalance - coast);
-        System.out.println(user);
+        if (user.getCashValue() < 0) {
+            throw new DAOException("You do not have enough money");
+        }
         mainAcc.setCashValue(mainAcc.getCashValue() + coast);
         session.update(mainAcc);
         session.update(user);
     }
-
 
     private Date getActualDate(Session session) {
         return (Date) session.createSQLQuery(ACTUAL_TIME).uniqueResult();

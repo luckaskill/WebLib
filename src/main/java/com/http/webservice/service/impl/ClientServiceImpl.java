@@ -13,6 +13,7 @@ import com.http.webservice.service.ClientService;
 import com.http.webservice.service.validation.ChangeRankDataValidator;
 import com.http.webservice.service.validation.CredentialValidator;
 import com.http.webservice.service.validation.NewUserDataValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

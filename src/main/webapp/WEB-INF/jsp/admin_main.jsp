@@ -272,6 +272,7 @@
             <td>${locale_raring}</td>
             <td>${locale_issue}</td>
             <td>Deadline</td>
+            <td>Action</td>
         </tr>
         <c:forEach items="${sessionScope.rentBooks}" var="rentBook">
             <tr>
@@ -280,6 +281,14 @@
                 <td>${rentBook.book.rating}</td>
                 <td>${rentBook.book.issue}</td>
                 <td>${rentBook.returnDeadline}</td>
+                <td>
+                    <form>
+                        <input type="hidden" name="command" value="returnBook">
+                        <input type="hidden" name="rentID" value="${rentBook.id}">
+
+                        <input type="submit" name="returnBookButton" value="Return">
+                    </form>
+                </td>
             </tr>
         </c:forEach>
         <c:forEach items="${sessionScope.purchasedBooks}" var="purchasedBooks">
@@ -289,6 +298,14 @@
                 <td>${purchasedBooks.book.rating}</td>
                 <td>${purchasedBooks.book.issue}</td>
                 <td>Purchased</td>
+                <td>
+                    <form>
+                        <input type="hidden" name="command" value="removePurchase">
+                        <input type="hidden" name="purchaseID" value="${purchasedBooks.id}">
+
+                        <input type="submit" name="returnBookButton" value="Clean">
+                    </form>
+                </td>
             </tr>
         </c:forEach>
     </table>

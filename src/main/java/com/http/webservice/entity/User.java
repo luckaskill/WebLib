@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -29,10 +29,10 @@ public class User {
     private float cashValue = 30;
     @Setter
     @OneToMany(mappedBy = "user")
-    private Set<Rent> rentBooks = new HashSet<>();
+    private List<Rent> rentBooks = new ArrayList<>();
     @Setter
     @OneToMany(mappedBy = "user")
-    private Set<Purchased> purchasedBooks = new HashSet<>();
+    private List<Selling> purchasedBooks = new ArrayList<>();
 
     public User(String login, String password, int accessLevel, float cashValue) {
         this.login = login;

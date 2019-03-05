@@ -3,22 +3,21 @@ package com.http.webservice;
 import com.http.webservice.controller.command.CommandProvider;
 import com.http.webservice.dao.HibernateSessionFactoryUtil;
 import com.http.webservice.dao.SQLManager;
-import com.http.webservice.dao.impl.SQLAdministrationDAO;
-import com.http.webservice.dao.impl.SQLLibraryDAO;
-import com.http.webservice.dao.impl.SQLUserDAO;
 import com.http.webservice.dao.impl.SQLVendorDAO;
-import com.http.webservice.dao.pool.ConnectionPool;
-import com.http.webservice.entity.Book;
-import com.http.webservice.entity.User;
-import com.http.webservice.exception.DAOException;
+import com.http.webservice.entity.SpringApplicationContext;
+import com.http.webservice.exception.ValidationException;
+import com.http.webservice.service.impl.ClientServiceImpl;
 import lombok.Cleanup;
+import lombok.Getter;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Component
 public class Main extends SQLManager {
+    @Getter
+    public static ApplicationContext context = new AnnotationConfigApplicationContext("com.http.webservice");
     public static void main(String[] args) {
 //        SQLAdministrationDAO sqlAdministrationDAO= new SQLAdministrationDAO();
 //            SQLUserDAO sqlUserDAO= new SQLUserDAO();
@@ -29,9 +28,7 @@ public class Main extends SQLManager {
 //        } catch (DAOException e) {
 //            e.printStackTrace();
 //        }
-        @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-
-        SQLVendorDAO sqlVendorDAO=new SQLVendorDAO();
+        CommandProvider provider = new CommandProvider(context);
 //        sqlVendorDAO.main();
 //        ArrayList<Book> books = new ArrayList<>();
 //        User user = session.get(User.class, Long.parseLong(String.valueOf(1)));

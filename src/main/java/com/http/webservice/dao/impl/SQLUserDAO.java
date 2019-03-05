@@ -2,24 +2,14 @@ package com.http.webservice.dao.impl;
 
 import com.http.webservice.dao.HibernateSessionFactoryUtil;
 import com.http.webservice.dao.patterns.UserDAO;
-import com.http.webservice.dao.pool.ConnectionPool;
 import com.http.webservice.entity.User;
 import com.http.webservice.entity.UserData;
 import com.http.webservice.exception.DAOException;
 import lombok.Cleanup;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.CriteriaQuery;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Component;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Component
 public class SQLUserDAO implements UserDAO {

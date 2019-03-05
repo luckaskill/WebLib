@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -33,10 +33,10 @@ public class Book {
     private float rentCoast;
     @Setter
     @OneToMany(mappedBy = "book")
-    private Set<Rent> rentBooks = new HashSet<>();
+    private List<Rent> rentBooks = new ArrayList<>();
     @Setter
     @OneToMany(mappedBy = "book")
-    private Set<Purchased> purchaseBooks = new HashSet<>();
+    private List<Selling> purchaseBooks = new ArrayList<>();
 
     public Book(String title, String author, int issue, float coast, int rating, float rentCoast) {
         this.title = title;

@@ -2,7 +2,6 @@ package com.http.webservice.dao.impl;
 
 import com.http.webservice.dao.HibernateSessionFactoryUtil;
 import com.http.webservice.dao.patterns.AdministrationDAO;
-import com.http.webservice.dao.pool.ConnectionPool;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.DAOException;
 import lombok.Cleanup;
@@ -10,11 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
