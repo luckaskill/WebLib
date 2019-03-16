@@ -15,7 +15,7 @@
     <style>
         body {
             background-size: cover;
-            background-image: url("https://www.imgbase.info/images/safe-wallpapers/photography/indoor/40465_indoor_library.jpg");
+            background-image: url("<c:url value="/images/40465_indoor_library.png"/>");
         }
     </style>
 </head>

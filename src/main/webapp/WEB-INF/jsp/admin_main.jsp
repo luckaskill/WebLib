@@ -34,7 +34,7 @@
         }
 
         table {
-            background-color: #311f3cbf;;
+            background-color: #311f3cbf;
             color: #faffd0;
             text-align: center;
             width: 70%;
