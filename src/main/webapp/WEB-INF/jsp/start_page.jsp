@@ -45,7 +45,7 @@
     </form>
 </div>
 <div style="color: antiquewhite;" align="center">
-    <form action="controller" method="get" style="margin-top: 10%;">
+    <form action="controller" method="post" style="margin-top: 10%;">
         <input type="hidden" name="command" value="authorization">
         ${locale_login}:
         <div style="margin-bottom: 10px;margin-top: 10px">

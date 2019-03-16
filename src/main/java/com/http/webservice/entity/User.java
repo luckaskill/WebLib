@@ -46,6 +46,12 @@ public class User {
         this.accessLevel = accessLevel;
         this.cashValue = cashValue;
     }
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" +

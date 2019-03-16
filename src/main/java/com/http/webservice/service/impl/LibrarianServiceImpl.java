@@ -7,14 +7,12 @@ import com.http.webservice.dao.patterns.VendorDAO;
 import com.http.webservice.entity.Book;
 import com.http.webservice.entity.Selling;
 import com.http.webservice.entity.Rent;
-import com.http.webservice.entity.SpringApplicationContext;
 import com.http.webservice.exception.DAOException;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.LibrarianService;
 import com.http.webservice.service.validation.BookDataValidator;
 import com.http.webservice.service.validation.SearchCriteriaValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

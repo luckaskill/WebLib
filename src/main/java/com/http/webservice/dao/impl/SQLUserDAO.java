@@ -17,23 +17,25 @@ public class SQLUserDAO implements UserDAO {
     @Override
     public User authorization(String login, String password) {
         @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        return (User) session.createQuery("from User where login='" + login + "' and password='" + password + "'").uniqueResult();
+        User user = (User) session.createQuery("from User where login='" + login + "' and password='" + password + "'").uniqueResult();
+        if (user != null) {
+            user.setPassword(null);
+        }
+        return user;
+
     }
 
     @Override
     public User registration(UserData userData) throws DAOException {
         @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction transaction = session.beginTransaction();
-        User user = new User();
-        user.setLogin(userData.getLogin());
-        user.setPassword(userData.getPassword());
+        User user = new User(userData.getLogin(), userData.getPassword());
         try {
+            Transaction transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
         } catch (ConstraintViolationException e) {
             throw new DAOException("This username already taken", e);
         }
-        return (User) session.createQuery("from User where login='" + userData.getLogin()
-                + "' and password='" + userData.getPassword() + "'").list().get(0);
+        return user;
     }
 }

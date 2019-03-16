@@ -17,10 +17,10 @@
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="com.http.webservice.entity.Book" />
-        <mapping class="com.http.webservice.entity.User" />
-        <mapping class="com.http.webservice.entity.Rent" />
-        <mapping class="com.http.webservice.entity.Selling" />
+        <mapping class="com.http.webservice.entity.Book"/>
+        <mapping class="com.http.webservice.entity.User"/>
+        <mapping class="com.http.webservice.entity.Rent"/>
+        <mapping class="com.http.webservice.entity.Selling"/>
 
     </session-factory>
 </hibernate-configuration>

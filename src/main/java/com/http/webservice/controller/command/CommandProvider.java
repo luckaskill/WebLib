@@ -5,12 +5,6 @@ import com.http.webservice.controller.command.impl.administration.OpenRankChange
 import com.http.webservice.controller.command.impl.administration.UsersView;
 import com.http.webservice.controller.command.impl.client.*;
 import com.http.webservice.controller.command.impl.librarian.*;
-import com.http.webservice.entity.SpringApplicationContext;
-import com.http.webservice.service.ClientService;
-import com.http.webservice.service.LibrarianService;
-import com.http.webservice.service.impl.ClientServiceImpl;
-import com.http.webservice.service.impl.LibrarianServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

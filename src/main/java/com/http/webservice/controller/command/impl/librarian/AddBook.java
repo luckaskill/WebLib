@@ -4,7 +4,6 @@ import com.http.webservice.controller.command.Command;
 import com.http.webservice.controller.command.impl.client.GoToStartPage;
 import com.http.webservice.controller.tools.ForwardByAccess;
 import com.http.webservice.entity.User;
-import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.LibrarianService;
 import org.springframework.stereotype.Component;
