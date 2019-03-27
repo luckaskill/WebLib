@@ -5,8 +5,6 @@ import com.http.webservice.controller.tools.ForwardByAccess;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.LibrarianService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,21 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Component
 public class RentABook implements Command {
-    @Autowired
     private LibrarianService service;
+
+    public RentABook(LibrarianService service) {
+        this.service = service;
+    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        float rentCoast = Float.parseFloat(request.getParameter("rentCoast"));
+
         try {
-            service.rentABook(user.getId(), Long.parseLong(request.getParameter("bookID")), rentCoast);
-            if (user.getId() != 1) {
-                user.setCashValue(user.getCashValue() - rentCoast);
-            }
+            service.rentABook(request.getParameter("title"), request.getParameter("author"), Integer.parseInt(request.getParameter("issue")),
+                    Float.parseFloat(request.getParameter("coast")), Integer.parseInt(request.getParameter("rating")),
+                    Float.parseFloat(request.getParameter("rentCoast")), user);
         } catch (ServiceException e) {
             request.setAttribute("rentError", e.getMessage());
         }

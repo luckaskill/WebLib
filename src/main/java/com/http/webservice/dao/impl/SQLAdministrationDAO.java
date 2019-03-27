@@ -1,53 +1,87 @@
 package com.http.webservice.dao.impl;
 
-import com.http.webservice.dao.HibernateSessionFactoryUtil;
 import com.http.webservice.dao.patterns.AdministrationDAO;
+import com.http.webservice.dao.pool.ConnectionPool;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.DAOException;
-import lombok.Cleanup;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.springframework.stereotype.Component;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class SQLAdministrationDAO implements AdministrationDAO {
+    private static final String ALL_USERS_INFO_SHOW = "SELECT * FROM users";
+    private static final String CHECK_PASSWORD_AND_ACTION_NAME = "SELECT * FROM admin_passwords WHERE password = ? and action_name = ?";
+    private static final String SET_NEW_ACCESS_LEVEL_TO_USER = "UPDATE users SET accessLevel = ? WHERE id = ?;";
 
+    private ConnectionPool pool;
 
-    @Override
-    public List<User> findAllUsers() {
-        @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        return session.createQuery("from User", User.class).list();
+    public SQLAdministrationDAO(ConnectionPool pool) {
+        this.pool = pool;
     }
 
     @Override
-    public synchronized void changeUserAccessLevel(String password, long userID, String actionName) throws DAOException {
-        if (userID == 1) {
-            throw new DAOException("Nice try");
+    public List<User> findAllUsers() throws DAOException {
+        ArrayList<User> users = new ArrayList<>();
+        Connection connection = pool.takeConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = connection.prepareStatement(ALL_USERS_INFO_SHOW);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                if (rs.getLong("accessLevel") == 3) {
+                    continue;
+                }
+                users.add(new User(rs.getLong("id"), rs.getString("login"), null, null, null,
+                        rs.getInt("accessLevel"), rs.getFloat("cash_value")));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            pool.close(st, rs, connection);
         }
-        @Cleanup Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        String check = (String) session.createSQLQuery("SELECT password FROM admin_passwords WHERE password ='" + password
-                + "' and action_name = '" + actionName + "'").uniqueResult();
-        if (check != null) {
-            User user = session.get(User.class, userID);
-            user.setAccessLevel(defineNewAccessLevel(actionName));
-            Transaction tr = session.beginTransaction();
-            session.update(user);
-            tr.commit();
-            return;
-        }
-        throw new DAOException("WRONG PASSWORD");
+        return users;
     }
 
-    private int defineNewAccessLevel(String actionName) throws DAOException {
-        if (actionName.equals("Promote")) {
+    @Override
+    public void changeUserAccessLevel(String password, long userID, String actionName) throws DAOException {
+        Connection connection = pool.takeConnection();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = connection.prepareStatement(CHECK_PASSWORD_AND_ACTION_NAME);
+            st.setString(1, password);
+            st.setString(2, actionName);
+            rs = st.executeQuery();
+            if (!rs.next()) {
+                throw new DAOException("WRONG PASSWORD");
+            }
+            st = connection.prepareStatement(SET_NEW_ACCESS_LEVEL_TO_USER);
+
+            st.setInt(1, defineNewAccessLevel(password));
+            st.setLong(2, userID);
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Server problems", e);
+        } finally {
+            pool.close(st, rs, connection);
+        }
+    }
+
+    private int defineNewAccessLevel(String password) throws DAOException {
+        if (password.equals("Promote")) {
             return 2;
         }
-        if (actionName.equals("Block")) {
+        if (password.equals("Block")) {
             return 0;
         }
-        if (actionName.equals("Unblock") || actionName.equals("Demotion")) {
+        if (password.equals("Unblock") || password.equals("Demotion")) {
             return 1;
         }
         throw new DAOException("WRONG PASSWORD");

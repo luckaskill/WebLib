@@ -6,6 +6,6 @@ import com.http.webservice.exception.DAOException;
 import java.util.List;
 
 public interface AdministrationDAO {
-    List<User> findAllUsers();
+    List<User> findAllUsers() throws DAOException;
     void changeUserAccessLevel(String password, long userID, String actionName) throws DAOException;
 }

@@ -8,11 +8,11 @@ import com.http.webservice.entity.UserData;
 import java.util.List;
 
 public interface ClientService {
-    User authorization(String login, String password) throws ValidationException;
+    User authorization(String login, String password) throws ServiceException, ValidationException;
 
     User registration(UserData user) throws ServiceException, ValidationException;
 
-    List<User> findAllUsers();
+    List<User> findAllUsers() throws ServiceException;
 
     void changeUserAccessLevel(String password, long userID, String actionName) throws ServiceException, ValidationException;
 

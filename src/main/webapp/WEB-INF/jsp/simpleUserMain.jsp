@@ -7,8 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <html>
 <head>
     <title>hello page</title>
@@ -16,7 +14,6 @@
         div {
             position: fixed;
         }
-
         .resultMessage {
             position: absolute;
             top: 25%;
@@ -24,17 +21,14 @@
             width: 20%;
             color: bisque;
         }
-
         form {
             margin: 2px;
         }
-
         .tableButtonSize {
             width: 95%;
             height: 40%;
             margin: 2px;
         }
-
         table {
             background-color: #311f3cbf;;
             color: white;
@@ -44,13 +38,11 @@
             margin-top: 25px;
             font-family: cursive;
         }
-
         body {
             background-size: cover;
             background-image: url("http://wallpapersmug.com/download/1920x1080/f12332/books.jpg");
             color: aliceblue;
         }
-
         .commandButtonSize {
             width: 200px;
             height: 25px;
@@ -58,26 +50,6 @@
     </style>
 </head>
 <body>
-<fmt:setLocale value="${sessionScope.local}"/>
-<fmt:setBundle basename="resources.locale.locale" var="loc"/>
-<fmt:message bundle="${loc}" key="locale.default.welcome_admin_message" var="locale_welcome_message"/>
-<fmt:message bundle="${loc}" key="locale.default.locale_button.eng" var="locale_button_eng"/>
-<fmt:message bundle="${loc}" key="locale.default.locale_button.ru" var="locale_button_ru"/>
-<fmt:message bundle="${loc}" key="locale.default.view_our_library_button" var="locale_our_lib_button"/>
-<fmt:message bundle="${loc}" key="locale.default.view_your_books_button" var="locale_your_lib_button"/>
-<fmt:message bundle="${loc}" key="locale.default.add_book_panel_button" var="locale_add_book_panel_button"/>
-<fmt:message bundle="${loc}" key="locale.default.users_control_panel" var="locale_users_control_panel_button"/>
-<fmt:message bundle="${loc}" key="locale.default.search_button" var="locale_search_button"/>
-<fmt:message bundle="${loc}" key="locale.default.enter_search_criteria" var="locale_enter_search_criteria"/>
-<fmt:message bundle="${loc}" key="locale.default.log_out_button" var="locale_log_out"/>
-<fmt:message bundle="${loc}" key="locale.default.title" var="locale_title"/>
-<fmt:message bundle="${loc}" key="locale.default.author" var="locale_author"/>
-<fmt:message bundle="${loc}" key="locale.default.issue" var="locale_issue"/>
-<fmt:message bundle="${loc}" key="locale.default.coast" var="locale_coast"/>
-<fmt:message bundle="${loc}" key="locale.default.rent_coast" var="locale_rent_coast"/>
-<fmt:message bundle="${loc}" key="locale.default.rating" var="locale_raring"/>
-<fmt:message bundle="${loc}" key="locale.default.enter" var="locale_enter"/>
-
 <h1>
     Halo, book lover <c:out value="${sessionScope.user.login}"/>
     <br/>
@@ -122,19 +94,23 @@
             <td>Rent</td>
             <td>Buy</td>
         </tr>
-        <c:forEach items="${sessionScope.books}" var="rentBook">
+        <c:forEach items="${sessionScope.books}" var="book">
             <tr>
-                <td>${rentBook.title}</td>
-                <td>${rentBook.author}</td>
-                <td>${rentBook.rating}</td>
-                <td>${rentBook.coast}</td>
-                <td>${rentBook.rentCoast}</td>
-                <td>${rentBook.issue}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.rating}</td>
+                <td>${book.coast}</td>
+                <td>${book.rentCoast}</td>
+                <td>${book.issue}</td>
                 <td>
                     <form>
                         <input type="hidden" name="command" value="rentBook">
-                        <input type="hidden" name="rentCoast" value="${rentBook.rentCoast}"/>
-                        <input type="hidden" name="bookID" value="${rentBook.id}"/>
+                        <input type="hidden" name="title" value="${book.title}"/>
+                        <input type="hidden" name="author" value="${book.author}"/>
+                        <input type="hidden" name="rating" value="${book.rating}"/>
+                        <input type="hidden" name="coast" value="${book.coast}"/>
+                        <input type="hidden" name="issue" value="${book.issue}"/>
+                        <input type="hidden" name="rentCoast" value="${book.rentCoast}"/>
 
                         <input type="submit" name="rentButton" value="Rent" class="tableButtonSize"/>
                     </form>
@@ -142,43 +118,46 @@
                 <td>
                     <form>
                         <input type="hidden" name="command" value="buyBook">
-                        <input type="hidden" name="coast" value="${rentBook.coast}"/>
-                        <input type="hidden" name="bookID" value="${rentBook.id}"/>
+                        <input type="hidden" name="title" value="${book.title}"/>
+                        <input type="hidden" name="author" value="${book.author}"/>
+                        <input type="hidden" name="rating" value="${book.rating}"/>
+                        <input type="hidden" name="coast" value="${book.coast}"/>
+                        <input type="hidden" name="issue" value="${book.issue}"/>
+                        <input type="hidden" name="rentCoast" value="${book.rentCoast}"/>
 
                         <input type="submit" name="rentButton" value="Buy" class="tableButtonSize"/>
                     </form>
                 </td>
-                <td>
             </tr>
         </c:forEach>
     </table>
 </c:if>
 
-<c:if test="${sessionScope.rentBooks != null}">
+<c:if test="${userBooks!=null}">
     <table border="1">
         <tr>
-            <td>${locale_title}</td>
-            <td>${locale_author}</td>
-            <td>${locale_raring}</td>
-            <td>${locale_issue}</td>
+            <td>Title</td>
+            <td>Author</td>
+            <td>Rating</td>
+            <td>Issue</td>
             <td>Deadline</td>
         </tr>
-        <c:forEach items="${sessionScope.rentBooks}" var="rentBook">
+        <c:forEach items="${sessionScope.userBooks}" var="book">
             <tr>
-                <td>${rentBook.book.title}</td>
-                <td>${rentBook.book.author}</td>
-                <td>${rentBook.book.rating}</td>
-                <td>${rentBook.book.issue}</td>
-                <td>${rentBook.returnDeadline}</td>
-            </tr>
-        </c:forEach>
-        <c:forEach items="${sessionScope.purchasedBooks}" var="purchasedBooks">
-            <tr>
-                <td>${purchasedBooks.book.title}</td>
-                <td>${purchasedBooks.book.author}</td>
-                <td>${purchasedBooks.book.rating}</td>
-                <td>${purchasedBooks.book.issue}</td>
-                <td>Purchased</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.rating}</td>
+                <td>${book.issue}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${book.deadline != null}">
+                            ${book.deadline}
+                        </c:when>
+                        <c:otherwise>
+                            Purchased
+                        </c:otherwise>
+                    </c:choose>
+                </td>
             </tr>
         </c:forEach>
     </table>
@@ -189,19 +168,6 @@
     <c:out value="${requestScope.nothing}"/>
     <c:out value="${requestScope.rentError}"/>
 </h1>
-
-<div style="right: 4%; bottom: 5%;">
-    <form action="controller" method="post">
-        <input type="hidden" name="command" value="changeLocale">
-        <input type="hidden" name="locale" value="ru">
-        <input type="submit" name="${locale_button_ru}" value="${locale_button_ru}"/>
-    </form>
-    <form action="controller" method="post">
-        <input type="hidden" name="command" value="changeLocale">
-        <input type="hidden" name="locale" value="eng">
-        <input type="submit" name="${locale_button_eng}" value="${locale_button_eng}"/>
-    </form>
-</div>
 
 <div style="right: 5%; top: 3%; width: 50px; height: 27px">
     <form>

@@ -7,26 +7,26 @@ import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.LibrarianService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 public class EditBook implements Command {
-    private static final String NEW_TITLE = "title";
-    private static final String NEW_AUTHOR = "author";
-    private static final String NEW_ISSUE = "issue";
-    private static final String NEW_COAST = "coast";
-    private static final String NEW_RATING = "rating";
-    private static final String NEW_RENT_COAST = "rentCoast";
+    private static final String PARAMETER_TITLE = "title";
+    private static final String PARAMETER_AUTHOR = "author";
+    private static final String PARAMETER_ISSUE = "issue";
+    private static final String PARAMETER_COAST = "coast";
+    private static final String PARAMETER_RATING = "rating";
+    private static final String PARAMETER_RENT_COAST = "rentCoast";
     private static final String PARAMETER_ID = "bookID";
 
-    @Autowired
     private LibrarianService service;
+
+    public EditBook(LibrarianService service) {
+        this.service = service;
+    }
 
     @SuppressWarnings("Duplicates")
     @Override
@@ -38,20 +38,23 @@ public class EditBook implements Command {
             return;
         }
 
-        String title = request.getParameter(NEW_TITLE);
-        String author = request.getParameter(NEW_AUTHOR);
-        int issue = Integer.parseInt(request.getParameter(NEW_ISSUE));
-        float coast = Float.parseFloat(request.getParameter(NEW_COAST));
-        float rentCoast = Float.parseFloat(request.getParameter(NEW_RENT_COAST));
-        int rating = Integer.parseInt(request.getParameter(NEW_RATING));
+        String title = request.getParameter(PARAMETER_TITLE);
+        String author = request.getParameter(PARAMETER_AUTHOR);
+        int issue = Integer.parseInt(request.getParameter(PARAMETER_ISSUE));
+        float coast = Float.parseFloat(request.getParameter(PARAMETER_COAST));
+        float rentCoast = Float.parseFloat(request.getParameter(PARAMETER_RENT_COAST));
+        int rating = Integer.parseInt(request.getParameter(PARAMETER_RATING));
         long bookID = Long.parseLong(request.getParameter(PARAMETER_ID));
         try {
             service.editBook(title, author, issue, coast, rating, rentCoast, bookID);
-            String commandRedirect = "controller?command=openEditBookPanel&title=&addingSuccess=Successful&editBookPanelView=true";
+            String commandRedirect = "controller?command=openEditBookPanel&title=" + title + "&author=" + author + "&issue=" + issue +
+                    "&coast=" + coast + "&rentCoast=" + rentCoast + "&rating=" + rating + "&bookID=" + bookID +
+                    "&editBookPanelView=true&addingSuccess=Change%20passed%20success";
             ForwardByAccess.redirectByCommand(response, commandRedirect);
-        } catch (ValidationException | ServiceException e){
-            String commandRedirect = "controller?command=openEditBookPanel&title=&addingSuccess=" + e.getMessage() +
-                    "&editBookPanelView=true";
+        } catch (ServiceException | ValidationException e) {
+            String commandRedirect = "controller?command=openEditBookPanel&title=" + title + "&author=" + author + "&issue=" + issue
+                    + "&coast=" + coast + "&rentCoast=" + rentCoast + "&rating=" + rating + "&addingSuccess=" + e.getMessage() +
+                    "&editBookPanelView=true" + "&bookID=" + bookID;
             ForwardByAccess.redirectByCommand(response, commandRedirect);
         }
     }

@@ -8,8 +8,6 @@ import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@Component
 public class ChangeUserAccessLevel implements Command {
     private static final String ACTION_NAME = "actionName";
     private static final String CHANGING_USER_ID = "changingUserID";
     private static final String ADMIN_PASSWORD = "adminPassword";
 
-    @Autowired
     private ClientService service;
 
+    public ChangeUserAccessLevel(ClientService service) {
+        this.service = service;
+    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {
