@@ -7,6 +7,7 @@ import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -20,11 +21,8 @@ public class Authorization implements Command {
     private static final String PARAMETER_LOGIN = "login";
     private static final String PARAMETER_PASSWORD = "password";
 
-    private ClientService service ;
-
-    public Authorization(ClientService service) {
-        this.service = service;
-    }
+    @Autowired
+    private ClientService service;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -7,6 +7,7 @@ import com.http.webservice.controller.tools.TablesCleaner;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -18,11 +19,8 @@ import java.io.IOException;
 @Component
 public class UsersView implements Command {
 
+    @Autowired
     private ClientService service;
-
-    public UsersView(ClientService service) {
-        this.service = service;
-    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, NullPointerException {

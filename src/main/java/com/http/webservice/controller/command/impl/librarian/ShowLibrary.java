@@ -7,6 +7,7 @@ import com.http.webservice.entity.Book;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.LibrarianService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -18,11 +19,8 @@ import java.util.List;
 
 @Component
 public class ShowLibrary implements Command {
+    @Autowired
     private LibrarianService service;
-
-    public ShowLibrary(LibrarianService service) {
-        this.service = service;
-    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

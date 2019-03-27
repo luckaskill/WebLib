@@ -1,41 +1,43 @@
 package com.http.webservice.service.impl;
 
-import com.http.webservice.dao.impl.SQLLibraryDAO;
-import com.http.webservice.dao.impl.SQLVendorDAO;
 import com.http.webservice.dao.patterns.LibraryDAO;
 import com.http.webservice.dao.patterns.VendorDAO;
 import com.http.webservice.entity.Book;
-import com.http.webservice.entity.Selling;
 import com.http.webservice.entity.Rent;
+import com.http.webservice.entity.Selling;
 import com.http.webservice.exception.DAOException;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.LibrarianService;
 import com.http.webservice.service.validation.BookDataValidator;
 import com.http.webservice.service.validation.SearchCriteriaValidator;
-import org.springframework.context.ApplicationContext;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class LibrarianServiceImpl implements LibrarianService {
     private LibraryDAO libraryDAO;
     private VendorDAO vendorDAO;
 
-    public LibrarianServiceImpl(ApplicationContext context) {
-        this.libraryDAO = context.getBean(SQLLibraryDAO.class);
-        this.vendorDAO = context.getBean(SQLVendorDAO.class);
-    }
 
     @Override
-    public List<Book> find(String criteria) throws ValidationException, ServiceException {
+    public List<Book> find(String criteria) throws ValidationException {
         SearchCriteriaValidator.validate(criteria);
-        try {
-            return libraryDAO.find(criteria);
-        } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+        List<Book> books = findAll();
+        List<Book> foundBooks = new ArrayList<>();
+        for (Book book : books) {
+            if ((book = findSimilarBooks(criteria, book)) != null) {
+                foundBooks.add(book);
+            }
         }
+        if (!foundBooks.isEmpty()) {
+            sortBooksByMatches(findMatches(criteria, foundBooks), foundBooks);
+        }
+        return foundBooks;
     }
 
     @Override
@@ -79,9 +81,16 @@ public class LibrarianServiceImpl implements LibrarianService {
     }
 
     @Override
-    public void editBook(String title, String author, int issue, Float coast, int rating, float rentCoast, long bookID) throws ValidationException {
+    public void editBook(String title, String author, int issue, Float coast, int rating, float rentCoast, long bookID) throws ValidationException, ServiceException {
         BookDataValidator.validate(title, author, issue, coast, rating, rentCoast);
-        libraryDAO.editBook(title, author, issue, coast, rating, rentCoast, bookID);
+        Book book = findBook(bookID);
+        book.setAuthor(author);
+        book.setCoast(coast);
+        book.setIssue(issue);
+        book.setRating(rating);
+        book.setRentCoast(rentCoast);
+        book.setTitle(title);
+        libraryDAO.editBook(book);
     }
 
     @Override
@@ -92,5 +101,70 @@ public class LibrarianServiceImpl implements LibrarianService {
     @Override
     public void removePurchase(long rentID) {
         libraryDAO.removePurchase(rentID);
+    }
+
+    @Override
+    public Book findBook(long id) throws ServiceException {
+        Book book = libraryDAO.findBook(id);
+        if (book != null) {
+            return book;
+        } else {
+            throw new ServiceException("Wrong book id");
+        }
+    }
+
+    private void sortBooksByMatches(List<Double> matchesList, List<Book> books) {
+        for (int j = 1; j < matchesList.size(); j++) {
+            for (int i = 0; i < matchesList.size() - j; i++) {
+                if (matchesList.get(i) < matchesList.get(i + 1)) {
+                    Double temp = matchesList.get(i);
+                    matchesList.set(i, matchesList.get(i + 1));
+                    matchesList.set(i + 1, temp);
+
+                    Book bookTemp = books.get(i);
+                    books.set(i, books.get(i + 1));
+                    books.set(i + 1, bookTemp);
+                }
+            }
+        }
+        matchesList.clear();
+    }
+
+    private ArrayList<Double> findMatches(String criteria, List<Book> books) {
+        ArrayList<Double> matchesList = new ArrayList<>();
+
+        for (Book book : books) {
+            double matches = 0;
+
+            for (String word : criteria.split(" ")) {
+                word = word.toUpperCase();
+
+                for (String bookDesc : (book.getAuthor() + " " + book.getTitle()).split(" ")) {
+                    if (word.equals(bookDesc.toUpperCase())) {
+                        matches += 5;
+                        continue;
+                    }
+                    if (bookDesc.toUpperCase().contains(word)) {
+                        matches += 0.5;
+                    }
+                    if (bookDesc.toUpperCase().contains(word)) {
+                        matches += 0.5;
+                    }
+                }
+            }
+            matchesList.add(matches);
+        }
+        return matchesList;
+    }
+
+    private Book findSimilarBooks(String criteria, Book book) {
+        String[] criteriaSplit = criteria.split(" ");
+        for (String word : criteriaSplit) {
+            word = word.toUpperCase();
+            if (book.getAuthor().toUpperCase().contains(word) || book.getTitle().toUpperCase().contains(word)) {
+                return book;
+            }
+        }
+        return null;
     }
 }

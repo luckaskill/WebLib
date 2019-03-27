@@ -2,9 +2,13 @@ package com.http.webservice.controller;
 
 import com.http.webservice.controller.command.Command;
 import com.http.webservice.controller.command.CommandProvider;
+import com.http.webservice.entity.ContextConfig;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +18,9 @@ import java.io.IOException;
 
 public class Controller extends HttpServlet {
     private static final String PARAMETER_COMMAND = "command";
-    @Autowired
-    private ApplicationContext context = new AnnotationConfigApplicationContext("com.http.webservice");
-    private CommandProvider provider = context.getBean(CommandProvider.class);
 
-    public Controller() {
-        super();
-    }
+    private ApplicationContext context = new AnnotationConfigApplicationContext(ContextConfig.class);
+    private CommandProvider provider = context.getBean(CommandProvider.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");

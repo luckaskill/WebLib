@@ -6,6 +6,7 @@ import com.http.webservice.entity.UserData;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.RequestDispatcher;
@@ -24,11 +25,9 @@ public class Registration implements Command {
     private static final String REGISTRATION_PAGE = "/WEB-INF/jsp/registration.jsp";
     private static final String REGISTRATION_COMPLETE_PAGE = "/WEB-INF/jsp/registration_completed.jsp";
 
-    private ClientService service ;
+    @Autowired
+    private ClientService service;
 
-    public Registration(ClientService service) {
-        this.service = service;
-    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,7 +43,7 @@ public class Registration implements Command {
         String page;
         try {
             user = service.registration(new UserData(login, password, password2));
-            request.getSession(false).setAttribute("user", user);
+            request.getSession(true).setAttribute("user", user);
 
             page = REGISTRATION_COMPLETE_PAGE;
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);

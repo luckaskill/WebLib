@@ -7,6 +7,7 @@ import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.LibrarianService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -24,11 +25,8 @@ public class EditBook implements Command {
     private static final String NEW_RENT_COAST = "rentCoast";
     private static final String PARAMETER_ID = "bookID";
 
+    @Autowired
     private LibrarianService service;
-
-    public EditBook(LibrarianService service) {
-        this.service = service;
-    }
 
     @SuppressWarnings("Duplicates")
     @Override
@@ -49,14 +47,11 @@ public class EditBook implements Command {
         long bookID = Long.parseLong(request.getParameter(PARAMETER_ID));
         try {
             service.editBook(title, author, issue, coast, rating, rentCoast, bookID);
-            String commandRedirect = "controller?command=openEditBookPanel&title=" + title + "&author=" + author + "&issue=" + issue +
-                    "&coast=" + coast + "&rentCoast=" + rentCoast + "&rating=" + rating + "&bookID=" + bookID +
-                    "&editBookPanelView=true&addingSuccess=Change%20passed%20success";
+            String commandRedirect = "controller?command=openEditBookPanel&title=&addingSuccess=Successful&editBookPanelView=true";
             ForwardByAccess.redirectByCommand(response, commandRedirect);
-        } catch (ValidationException e) {
-            String commandRedirect = "controller?command=openEditBookPanel&title=" + title + "&author=" + author + "&issue=" + issue
-                    + "&coast=" + coast + "&rentCoast=" + rentCoast + "&rating=" + rating + "&addingSuccess=" + e.getMessage() +
-                    "&editBookPanelView=true" + "&bookID=" + bookID;
+        } catch (ValidationException | ServiceException e){
+            String commandRedirect = "controller?command=openEditBookPanel&title=&addingSuccess=" + e.getMessage() +
+                    "&editBookPanelView=true";
             ForwardByAccess.redirectByCommand(response, commandRedirect);
         }
     }

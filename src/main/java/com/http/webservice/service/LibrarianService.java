@@ -16,7 +16,8 @@ public interface LibrarianService {
     void addToMainLib(String title, String author, int issue, float coast, int rating, float rentCoast) throws ValidationException;
     void rentABook(long userID, long bookID, float rentCoast) throws ServiceException;
     void sellABook(long userID, long bookID, float coast) throws ServiceException;
-    void editBook(String title, String author, int issue, Float coast, int rating, float rentCoast, long bookID) throws ValidationException;
+    void editBook(String title, String author, int issue, Float coast, int rating, float rentCoast, long bookID) throws ValidationException, ServiceException;
     void returnBook(long rentID);
     void removePurchase(long rentID);
+    Book findBook(long id) throws ServiceException;
 }
