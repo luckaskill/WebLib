@@ -5,6 +5,6 @@ import com.http.webservice.entity.UserData;
 import com.http.webservice.exception.DAOException;
 
 public interface UserDAO {
-    User authorization(String login, String password);
+    User authorization(String login, String password) throws DAOException;
     User registration(UserData userData) throws DAOException;
 }

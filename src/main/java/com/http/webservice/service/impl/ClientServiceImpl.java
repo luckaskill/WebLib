@@ -8,25 +8,30 @@ import com.http.webservice.exception.DAOException;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import com.http.webservice.service.ClientService;
+import com.http.webservice.service.DAOManager;
 import com.http.webservice.service.validation.ChangeRankDataValidator;
 import com.http.webservice.service.validation.CredentialValidator;
 import com.http.webservice.service.validation.NewUserDataValidator;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
-@AllArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private UserDAO sqlUserDAO;
     private AdministrationDAO administrationDAO;
 
+    public ClientServiceImpl(DAOManager daoManager){
+        sqlUserDAO = daoManager.getUserDAO();
+        administrationDAO = daoManager.getAdministrationDAO();
+    }
 
     @Override
-    public User authorization(String login, String password) throws ValidationException {
+    public User authorization(String login, String password) throws ServiceException, ValidationException {
         CredentialValidator.validate(login, password);
-        return sqlUserDAO.authorization(login, password);
+        try {
+            return sqlUserDAO.authorization(login, password);
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -40,13 +45,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<User> findAllUsers(){
-        return administrationDAO.findAllUsers();
+    public List<User> findAllUsers() throws ServiceException {
+        try {
+            return administrationDAO.findAllUsers();
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
     public void changeUserAccessLevel(String password, long userID, String actionName) throws ServiceException, ValidationException {
-        ChangeRankDataValidator.validate(actionName);
+        ChangeRankDataValidator.validation(actionName);
         try {
             administrationDAO.changeUserAccessLevel(password, userID, actionName);
         } catch (DAOException e) {

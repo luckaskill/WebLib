@@ -5,14 +5,12 @@ import com.http.webservice.controller.command.impl.client.GoToStartPage;
 import com.http.webservice.controller.tools.ForwardByAccess;
 import com.http.webservice.controller.tools.TablesCleaner;
 import com.http.webservice.entity.User;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 public class OpenEditBookPanel implements Command {
     private static final String PARAMETER_TITLE = "title";
     private static final String PARAMETER_AUTHOR = "author";

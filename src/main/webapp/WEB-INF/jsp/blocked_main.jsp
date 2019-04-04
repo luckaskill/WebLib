@@ -51,14 +51,14 @@
             <td>Rent coast</td>
             <td>Issue</td>
         </tr>
-        <c:forEach items="${sessionScope.books}" var="rentBook">
+        <c:forEach items="${sessionScope.books}" var="book">
             <tr>
-                <td>${rentBook.title}</td>
-                <td>${rentBook.author}</td>
-                <td>${rentBook.rating}</td>
-                <td>${rentBook.coast}</td>
-                <td>${rentBook.rentCoast}</td>
-                <td>${rentBook.issue}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.rating}</td>
+                <td>${book.coast}</td>
+                <td>${book.rentCoast}</td>
+                <td>${book.issue}</td>
             </tr>
         </c:forEach>
     </table>

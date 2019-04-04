@@ -4,14 +4,13 @@ import com.http.webservice.controller.command.Command;
 import com.http.webservice.controller.command.impl.client.GoToStartPage;
 import com.http.webservice.controller.tools.ForwardByAccess;
 import com.http.webservice.entity.User;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-@Component
+
 public class OpenRankChangerPanel implements Command {
     private static final String LOGIN = "login";
     private static final String ACTION_NAME = "actionName";

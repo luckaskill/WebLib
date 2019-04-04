@@ -3,12 +3,10 @@ package com.http.webservice.controller.command.impl.librarian;
 import com.http.webservice.controller.command.Command;
 import com.http.webservice.controller.tools.ForwardByAccess;
 import com.http.webservice.controller.tools.TablesCleaner;
-import com.http.webservice.entity.Selling;
-import com.http.webservice.entity.Rent;
+import com.http.webservice.entity.Book;
 import com.http.webservice.entity.User;
+import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.LibrarianService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +15,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@Component
 public class ViewUserBooks implements Command {
-    @Autowired
+
     private LibrarianService service;
+
+    public ViewUserBooks(LibrarianService service) {
+        this.service = service;
+    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,11 +29,14 @@ public class ViewUserBooks implements Command {
         session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
-        List<Rent> rentBooks = service.findRentBooks(((User) session.getAttribute("user")).getId());
-        List<Selling> purchasedBooks = service.findPurchasedBooks(((User) session.getAttribute("user")).getId());
-        session.setAttribute("rentBooks", rentBooks);
-        session.setAttribute("purchasedBooks", purchasedBooks);
-        TablesCleaner.cleanAllExcept(request.getSession(), "rentBooks");
+        List<Book> books;
+        try {
+            books = service.findUserBooks(user.getId());
+            session.setAttribute("userBooks", books);
+        } catch (ServiceException e) {
+            request.setAttribute("error", "Server  error, please try  later");
+        }
+        TablesCleaner.cleanAllExcept(request.getSession(), "userBooks");
         ForwardByAccess.forwardByAccess(request, response, user);
     }
 }

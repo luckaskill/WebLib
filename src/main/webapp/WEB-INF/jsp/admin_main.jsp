@@ -34,7 +34,7 @@
         }
 
         table {
-            background-color: #311f3cbf;
+            background-color: #311f3cbf;;
             color: #faffd0;
             text-align: center;
             width: 70%;
@@ -97,6 +97,7 @@
 <fmt:message bundle="${loc}" key="locale.default.rent_coast" var="locale_rent_coast"/>
 <fmt:message bundle="${loc}" key="locale.default.rating" var="locale_raring"/>
 <fmt:message bundle="${loc}" key="locale.default.enter" var="locale_enter"/>
+
 
 <h1>
     ${locale_welcome_message} <c:out value="${sessionScope.user.login}"/>
@@ -219,19 +220,23 @@
             <td>${locale_rent_coast}</td>
             <td>${locale_issue}</td>
         </tr>
-        <c:forEach items="${sessionScope.books}" var="rentBook">
+        <c:forEach items="${sessionScope.books}" var="book">
             <tr>
-                <td>${rentBook.title}</td>
-                <td>${rentBook.author}</td>
-                <td>${rentBook.rating}</td>
-                <td>${rentBook.coast}</td>
-                <td>${rentBook.rentCoast}</td>
-                <td>${rentBook.issue}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.rating}</td>
+                <td>${book.coast}</td>
+                <td>${book.rentCoast}</td>
+                <td>${book.issue}</td>
                 <td>
                     <form>
                         <input type="hidden" name="command" value="rentBook">
-                        <input type="hidden" name="rentCoast" value="${rentBook.rentCoast}"/>
-                        <input type="hidden" name="bookID" value="${rentBook.id}"/>
+                        <input type="hidden" name="title" value="${book.title}"/>
+                        <input type="hidden" name="author" value="${book.author}"/>
+                        <input type="hidden" name="rating" value="${book.rating}"/>
+                        <input type="hidden" name="coast" value="${book.coast}"/>
+                        <input type="hidden" name="issue" value="${book.issue}"/>
+                        <input type="hidden" name="rentCoast" value="${book.rentCoast}"/>
 
                         <input type="submit" name="rentButton" value="Rent" class="tableButtonSize"/>
                     </form>
@@ -239,8 +244,11 @@
                 <td>
                     <form>
                         <input type="hidden" name="command" value="buyBook">
-                        <input type="hidden" name="coast" value="${rentBook.coast}"/>
-                        <input type="hidden" name="bookID" value="${rentBook.id}"/>
+                        <input type="hidden" name="title" value="${book.title}"/>
+                        <input type="hidden" name="author" value="${book.author}"/>
+                        <input type="hidden" name="rating" value="${book.rating}"/>
+                        <input type="hidden" name="coast" value="${book.coast}"/>
+                        <input type="hidden" name="issue" value="${book.issue}"/>
 
                         <input type="submit" name="rentButton" value="Buy" class="tableButtonSize"/>
                     </form>
@@ -248,13 +256,13 @@
                 <td>
                     <form>
                         <input type="hidden" name="command" value="openEditBookPanel">
-                        <input type="hidden" name="title" value="${rentBook.title}"/>
-                        <input type="hidden" name="author" value="${rentBook.author}"/>
-                        <input type="hidden" name="rating" value="${rentBook.rating}"/>
-                        <input type="hidden" name="coast" value="${rentBook.coast}"/>
-                        <input type="hidden" name="issue" value="${rentBook.issue}"/>
-                        <input type="hidden" name="rentCoast" value="${rentBook.rentCoast}"/>
-                        <input type="hidden" name="bookID" value="${rentBook.id}"/>
+                        <input type="hidden" name="title" value="${book.title}"/>
+                        <input type="hidden" name="author" value="${book.author}"/>
+                        <input type="hidden" name="rating" value="${book.rating}"/>
+                        <input type="hidden" name="coast" value="${book.coast}"/>
+                        <input type="hidden" name="issue" value="${book.issue}"/>
+                        <input type="hidden" name="rentCoast" value="${book.rentCoast}"/>
+                        <input type="hidden" name="bookID" value="${book.id}"/>
 
                         <input type="submit" name="openEditBookPanelButton" value="Edit" class="tableButtonSize"/>
                     </form>
@@ -264,7 +272,7 @@
     </table>
 </c:if>
 
-<c:if test="${sessionScope.rentBooks != null}">
+<c:if test="${userBooks != null}">
     <table border="1">
         <tr>
             <td>${locale_title}</td>
@@ -272,39 +280,22 @@
             <td>${locale_raring}</td>
             <td>${locale_issue}</td>
             <td>Deadline</td>
-            <td>Action</td>
         </tr>
-        <c:forEach items="${sessionScope.rentBooks}" var="rentBook">
+        <c:forEach items="${sessionScope.userBooks}" var="book">
             <tr>
-                <td>${rentBook.book.title}</td>
-                <td>${rentBook.book.author}</td>
-                <td>${rentBook.book.rating}</td>
-                <td>${rentBook.book.issue}</td>
-                <td>${rentBook.returnDeadline}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.rating}</td>
+                <td>${book.issue}</td>
                 <td>
-                    <form>
-                        <input type="hidden" name="command" value="returnBook">
-                        <input type="hidden" name="rentID" value="${rentBook.id}">
-
-                        <input type="submit" name="returnBookButton" value="Return">
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-        <c:forEach items="${sessionScope.purchasedBooks}" var="purchasedBooks">
-            <tr>
-                <td>${purchasedBooks.book.title}</td>
-                <td>${purchasedBooks.book.author}</td>
-                <td>${purchasedBooks.book.rating}</td>
-                <td>${purchasedBooks.book.issue}</td>
-                <td>Purchased</td>
-                <td>
-                    <form>
-                        <input type="hidden" name="command" value="removePurchase">
-                        <input type="hidden" name="purchaseID" value="${purchasedBooks.id}">
-
-                        <input type="submit" name="returnBookButton" value="Clean">
-                    </form>
+                    <c:choose>
+                        <c:when test="${book.deadline != null}">
+                            ${book.deadline}
+                        </c:when>
+                        <c:otherwise>
+                            Purchased
+                        </c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
         </c:forEach>

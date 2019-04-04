@@ -7,8 +7,6 @@ import com.http.webservice.entity.Book;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.LibrarianService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +15,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@Component
 public class ShowLibrary implements Command {
-    @Autowired
     private LibrarianService service;
+
+    public ShowLibrary(LibrarianService service) {
+        this.service = service;
+    }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,9 +28,16 @@ public class ShowLibrary implements Command {
         HttpSession session;
         session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        books = service.findAll();
-        session.setAttribute("books", books);
+        try {
+            books = service.findAll();
+            session.setAttribute("books", books);
+        } catch (ServiceException e) {
+            //LOG
+            e.printStackTrace();
+            request.setAttribute("error", "Server error, try again later");
+        }
         TablesCleaner.cleanAllExcept(session, "books");
         ForwardByAccess.forwardByAccess(request, response, user);
     }
+
 }
