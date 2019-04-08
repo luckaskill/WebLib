@@ -1,0 +1,3 @@
+com\http\webservice\service\impl\ClientServiceImplTest.class
+com\http\webservice\service\impl\LibrarianServiceImplTest.class
+com\http\webservice\service\validation\ValidatorTest.class

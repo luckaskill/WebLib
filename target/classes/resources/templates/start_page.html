@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>start page</title>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url("/images/40465_indoor_library.png");
+        }
+    </style>
+</head>
+<body>
+<div style="color: antiquewhite;" align="center">
+    <form action="login" method="post" style="margin-top: 10%; padding-bottom: 7px;">
+        Login:
+        <div style="margin-bottom: 10px;margin-top: 10px">
+            <input type="text" name="login" value=""/>
+        </div>
+        Password:
+        <div style="margin-bottom: 10px;margin-top: 10px">
+            <input type="password" name="password" value=""/>
+        </div>
+        <input type="submit" name="submit" value="Log in"/>
+    </form>
+    <a href="/registration" style="color: bisque;">Registration</a>
+    <h2 style="color: bisque; margin-top: 1%;"
+        th:text="${message}">
+    </h2>
+</div>
+</body>
+</html>
