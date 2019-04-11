@@ -1,7 +1,9 @@
 package com.http.webservice.controller.librarian;
 
 import com.http.webservice.service.impl.LibrarianServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 
 @RestController
+@AllArgsConstructor
 public class ReturnABook {
-    @Autowired
     private LibrarianServiceImpl service;
     private final static String RESPONSE_SUCCESS_MESSAGE = "Success";
     private final static String RESPONSE_ERROR_MESSAGE = "ERROR";
 
-    @GetMapping("/return/{id}")
+    @DeleteMapping("/return/{id}")
     public String returnABook(@PathVariable long id, HttpSession session) {
         if (session.getAttribute("user") != null) {
             service.returnABook(id);
@@ -24,7 +26,7 @@ public class ReturnABook {
             return RESPONSE_ERROR_MESSAGE;
         }
     }
-    @GetMapping("/clean/{id}")
+    @DeleteMapping("/clean/{id}")
     public String cleanABook(@PathVariable long id, HttpSession session) {
         if (session.getAttribute("user") != null) {
             service.removePurchase(id);

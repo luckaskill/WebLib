@@ -40,6 +40,7 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();

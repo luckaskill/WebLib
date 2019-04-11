@@ -1,6 +1,7 @@
 let libTable = $('#library');
 let libViewForm = document.getElementById('libView');
 let userLib = $('#userLibrary');
+let resultMessage = $("#resultMessage");
 
 libViewForm.onclick = function (ev) {
     ev.preventDefault();
@@ -71,7 +72,6 @@ function viewUserBooks(event) {
     $.ajax({
         type: "GET",
         url: '/library/mybooks',
-        data: 'json',
         datatype: 'json',
         contentType: "application/json",
         success: [function (data) {

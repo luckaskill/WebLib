@@ -6,8 +6,8 @@ import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.impl.LibrarianServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +21,7 @@ public class RentABook {
         this.service = service;
     }
 
-    @GetMapping("/library/rent/{id}")
+    @PostMapping("/library/rent/{id}")
     public String[] rentABook(HttpSession session, @PathVariable long id) {
         String responseMessage = "Rented";
         User user = (User) session.getAttribute("user");

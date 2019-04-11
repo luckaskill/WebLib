@@ -2,7 +2,7 @@ function returnABook(event, element) {
     event.preventDefault();
     let id = element.value;
     $.ajax({
-        type: "GET",
+        type: "DELETE",
         url: '/return/' + id,
         data: 'json',
         datatype: 'json',
@@ -20,7 +20,7 @@ function cleanABook(event, element) {
     event.preventDefault();
     let id = element.value;
     $.ajax({
-        type: "GET",
+        type: "DELETE",
         url: '/clean/' + id,
         data: 'json',
         datatype: 'json',

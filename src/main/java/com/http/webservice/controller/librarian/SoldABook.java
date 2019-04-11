@@ -4,19 +4,21 @@ import com.http.webservice.entity.Book;
 import com.http.webservice.entity.User;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.service.impl.LibrarianServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
+@AllArgsConstructor
 public class SoldABook {
-    @Autowired
     private LibrarianServiceImpl service;
 
-    @GetMapping("/library/purchase/{id}")
+    @PostMapping("/library/purchase/{id}")
     public String[] rentABook(HttpSession session, @PathVariable long id) {
         String responseMessage = "Purchased";
         User user = (User) session.getAttribute("user");

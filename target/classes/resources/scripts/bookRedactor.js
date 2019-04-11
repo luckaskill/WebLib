@@ -1,10 +1,9 @@
 let editPanel = $("#editBookPanel");
 
-
 function openAddBookPanel(event) {
     event.preventDefault();
     cleanPage([userLib, libTable]);
-    editPanel.append("<form action='/addBook' style='background-color: #000000bd; width: 22%;'>" +
+    editPanel.append("<form action='/addBook' style='background-color: #000000bd; width: 22%;' method='post'>" +
         "<div align=\"right\" class=\"editBookFields\" style=\"padding-top: 4%\">" +
         "Title: " +
         "<input type='text' name='title' value=''/>" +
@@ -43,7 +42,7 @@ function openEditBookPanel(event, element) {
         success: [function (data) {
             console.log(data);
             cleanPage([userLib, libTable]);
-            editPanel.append("<form action='/edit' style='background-color: #000000bd; width: 22%;'>" +
+            editPanel.append("<form onsubmit='update(event)' id='editForm' style='background-color: #000000bd; width: 22%;'>" +
                 "<input type='hidden' name='bookID' value='" + bookID + "'/>" +
                 "<div align=\"right\" class=\"editBookFields\" style=\"padding-top: 4%\">" +
                 "Title: " +
@@ -72,9 +71,21 @@ function openEditBookPanel(event, element) {
                 "<input type=\"submit\" name=\"editBookButton\" value='Edit commit'" +
                 " style=\"margin-bottom: 15px\"/>\n" +
                 "</form>"
-            )
-
+            );
         }]
     });
+}
 
+
+function update(event) {
+    event.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '/edit',
+        data: $('#editForm').serialize(),
+        success: [function (data) {
+            resultMessage.empty();
+            resultMessage.append(data);
+        }],
+    })
 }

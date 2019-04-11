@@ -3,7 +3,7 @@ function rentABook(event, element) {
     event.preventDefault();
     let bookID = element.value;
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: '/library/rent/' + bookID,
         success: [function (data) {
             let counter = 0;
@@ -30,7 +30,7 @@ function soldABook(event, element) {
     event.preventDefault();
     let bookID = element.value;
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: '/library/purchase/' + bookID,
         success: [function (data) {
             let counter = 0;
