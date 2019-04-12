@@ -1,4 +1,4 @@
-package com.http.webservice;
+package com.http.webservice.app;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan
+@ComponentScan("com.http.webservice")
 @EnableAutoConfiguration(exclude = {
         DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class,
@@ -72,7 +72,7 @@ public class Application {
 
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 
-        // Package contain entity classes
+        // Set entity classes package
         factoryBean.setPackagesToScan("com.http.webservice.entity");
         factoryBean.setDataSource(dataSource);
         factoryBean.setHibernateProperties(properties);

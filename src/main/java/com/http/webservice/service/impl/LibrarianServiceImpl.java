@@ -30,16 +30,16 @@ public class LibrarianServiceImpl implements LibrarianService {
     public List<Book> find(String criteria) throws ValidationException {
         SearchCriteriaValidator.validate(criteria);
         List<Book> books = findAll();
-        List<Book> foundBooks = new ArrayList<>();
+        List<Book> foundedBooks = new ArrayList<>();
         for (Book book : books) {
             if ((book = findSimilarBooks(criteria, book)) != null) {
-                foundBooks.add(book);
+                foundedBooks.add(book);
             }
         }
-        if (!foundBooks.isEmpty()) {
-            sortBooksByMatches(findMatches(criteria, foundBooks), foundBooks);
+        if (!foundedBooks.isEmpty()) {
+            sortBooksByMatches(findMatches(criteria, foundedBooks), foundedBooks);
         }
-        return foundBooks;
+        return foundedBooks;
     }
 
     @Override

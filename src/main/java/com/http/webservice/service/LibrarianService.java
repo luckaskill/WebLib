@@ -9,7 +9,7 @@ import com.http.webservice.exception.ValidationException;
 import java.util.List;
 
 public interface LibrarianService {
-    List<Book> find(String criteria) throws ValidationException, ServiceException;
+    List<Book> find(String criteria) throws ValidationException;
     List<Book> findAll();
     List<Rent> findRentBooks(long userID);
     List<Selling> findPurchasedBooks(long userID);

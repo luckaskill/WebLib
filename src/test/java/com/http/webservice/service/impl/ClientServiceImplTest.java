@@ -1,7 +1,8 @@
 package com.http.webservice.service.impl;
 
-import com.http.webservice.Application;
+import com.http.webservice.app.Application;
 import com.http.webservice.entity.User;
+import com.http.webservice.entity.UserData;
 import com.http.webservice.exception.ServiceException;
 import com.http.webservice.exception.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ class ClientServiceImplTest {
     }
 
     void registration() throws ServiceException, ValidationException {
-//        service.registration(new UserData("login", "password", "password"));
+        service.registration(new UserData("login", "password", "password"));
     }
 
     void findAllUsers() {

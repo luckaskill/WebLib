@@ -60,6 +60,7 @@ function viewLibrary() {
 }
 
 function cleanPage(tables) {
+    resultMessage.empty();
     editPanel.empty();
     $.each(tables, function (i, item) {
         item.empty();
@@ -106,6 +107,60 @@ function viewUserBooks(event) {
             userLib.append(toAppend);
         }]
     });
-
-
 }
+
+let criteriaForm = $("#criteriaForm");
+
+criteriaForm.submit(function (event) {
+    event.preventDefault();
+    $.ajax({
+        type: "GET",
+        url: '/library/search',
+        data: criteriaForm.serialize(),
+        datatype: 'json',
+        contentType: "application/json",
+        success: [function (data) {
+            console.log(data);
+            cleanPage([userLib, libTable]);
+            libTable.attr('border', 1);
+            libTable.append('<tr>\n' +
+                '<td>Title</td>\n' +
+                '<td>Author</td>\n' +
+                '<td>Rating</td>\n' +
+                '<td>Cost</td>\n' +
+                '<td>Rent Cost</td>\n' +
+                '<td>Issue</td>\n' +
+                '</tr>');
+            $.each(data, function (i, item) {
+                libTable.append('<tr>' +
+                    '<td>' + item.title + '</td>\n' +
+                    '<td>' + item.author + '</td>\n' +
+                    '<td>' + item.rating + '</td>\n' +
+                    '<td>' + item.cost + '</td>\n' +
+                    '<td>' + item.rentCost + '</td>\n' +
+                    '<td>' + item.issue + '</td>\n' +
+                    '<td>\n' +
+                    '    <button name="rentButton" class="tableButtonSize" ' +
+                    '     onclick="rentABook(event, this)" value="' + item.id + '" ">' +
+                    '     Rent</button>\n' +
+                    '</td>\n' +
+
+                    '<td>\n' +
+                    '     <button name="buyButton" class="tableButtonSize" ' +
+                    '      onclick="soldABook(event, this)" value="' + item.id + '" ">' +
+                    '      Buy</button>\n' +
+                    '</td>\n' +
+
+                    '<td>' +
+                    '     <button name="editBookButton" class="tableButtonSize" ' +
+                    '      onclick="openEditBookPanel(event, this)" value="' + item.id + '" ">' +
+                    '      Edit</button>\n' +
+                    '</td>'
+                    + '</tr>'
+                )
+            });
+        }]
+    })
+});
+
+

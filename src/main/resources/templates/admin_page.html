@@ -92,6 +92,16 @@
         <button class="commandButtonSize" onclick="openAddBookPanel(event)">Add book</button>
     </form>
 </div>
+
+<div style="right: 2%; width: 20%; top: 10%">
+    <form id="criteriaForm">
+        Search criteria:
+        <br/>
+        <input type="text" name="pattern" value=""/>
+        <input type="submit" name="searchButton" value="Search"/>
+    </form>
+</div>
+
 <form action="/logout" method="get" style="position: fixed; right: 3%; top: 7%;">
     <button value="/logout">Log out</button>
 </form>
