@@ -25,7 +25,7 @@ public class ViewUserBooks {
         this.service = service;
     }
 
-    @GetMapping("/library/mybooks")
+    @GetMapping("/library/mylib")
     public List<Purchase> viewLibrary(HttpSession session) {
         User user = (User) session.getAttribute("user");
         List<Rent> rents = service.findRentBooks(user.getId());

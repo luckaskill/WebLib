@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class EditBook {
     private LibrarianService service;
 
-
     @PostMapping("/edit")
     public String editBook(@RequestParam String title, @RequestParam String author, @RequestParam String issue,
                            @RequestParam String cost, @RequestParam String rating, @RequestParam String rentCost,

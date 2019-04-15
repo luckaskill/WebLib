@@ -11,7 +11,7 @@ libViewForm.onclick = function (ev) {
 function viewLibrary() {
     $.ajax({
         type: "GET",
-        url: '/library/viewAll',
+        url: '/library/all',
         data: 'json',
         datatype: 'json',
         contentType: "application/json",
@@ -72,7 +72,7 @@ function viewUserBooks(event) {
     event.preventDefault();
     $.ajax({
         type: "GET",
-        url: '/library/mybooks',
+        url: '/library/mylib',
         datatype: 'json',
         contentType: "application/json",
         success: [function (data) {

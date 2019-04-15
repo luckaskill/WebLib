@@ -19,7 +19,7 @@ public class ViewLibrary {
         this.service = service;
     }
 
-    @GetMapping("/library/viewAll")
+    @GetMapping("/library/all")
     public ResponseEntity<List<Book>> viewLibrary() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
